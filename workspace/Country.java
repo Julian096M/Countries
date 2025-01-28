@@ -1,14 +1,48 @@
-public class Country
-{
-  // add private instance variables for the name, capital, language, and image file.
+//Julian Moreno 
+//01/27/25
+public class Country {
+  // Variables privadas
+  private String name;
+  private String capital;
+  private String language;
+  private String imageFile;
 
-  // add constructors
+  // Constructor por defecto
+  public Country() {
+      this.name = "";
+      this.capital = "";
+      this.language = "";
+      this.imageFile = "";
+  }
 
-  // Write accessor/get methods for each instance variable that returns it.
+  // Constructor con 4 argumentos
+  public Country(String name, String capital, String language, String imageFile) {
+      this.name = name;
+      this.capital = capital;
+      this.language = language;
+      this.imageFile = imageFile;
+  }
 
-  // Write a toString() method that returns a concatenated String of 3 of the instance variables in a sentence like "..'s capital is .. and its primary language is ..."
- 
+  // Métodos get
+  public String getName() {
+      return name;
+  }
 
+  public String getCapital() {
+      return capital;
+  }
 
-  
+  public String getLanguage() {
+      return language;
+  }
+
+  public String getImageFile() {
+      return imageFile;
+  }
+
+  // Método toString
+  @Override
+  public String toString() {
+      return name + "'s capital is " + capital + " and its primary language is " + language + ".";
+  }
 }

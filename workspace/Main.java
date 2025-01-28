@@ -1,3 +1,5 @@
+//Julian Moreno 
+//01/27/25
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -26,65 +28,72 @@ public class Main
   }
 
   /* loadCountries() reads in the data from the countries-data.csv file and fills in the countryArray with data. You need to add the loop that reads in the country data into the array. */
-  public void loadCountries() 
-  {
-    // Open the data file - do not change
-    File file = new File("/workspaces/Countries/workspace/countries-data.csv");
+  public void loadCountries() {
+    File file = new File("/workspace/Countries/workspace/countries-data.csv");
     Scanner scan = null;
     try {
-      scan = new Scanner(file);
-    } catch(FileNotFoundException e) { 
-        System.out.println("File not found");     
+        scan = new Scanner(file);
+        int i = 0;
+        while (scan.hasNextLine() && i < countryArray.length) {
+            String input = scan.nextLine();
+            String[] data = input.split(",");
+            System.out.println("Read in " + data[0]);
+            countryArray[i] = new Country(data[0], data[1], data[2], data[3]);
+            i++;
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("File not found");
+    } finally {
+        if (scan != null) {
+            scan.close();
+        }
     }
-    
-    // Write a for loop that goes through the countryArray.
-    // for(int i ....) {
-    // Do the following inside the loop
-      String input = scan.nextLine();
-      String[] data = input.split(",");
-      System.out.println("Read in " + data[0]);
-      // inside the loop, create a new Country using your constructor with 4 arguments and pass in data[0], data[1], data[2], data[3] as arguments.
-     // inside the loop, set countryArray[i] to the created Country object
+}
      
-    
-  }
 
   /* showCountry() will show the image associated with the current country. It should get the country at index from the countryArray. It should use its get method to get its image file name and use the code below to put the image in the GUI.
   */
   public void showCountry() {
-    // Get the country at index from countryArray
-    
-    // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
-    String imagefile = "worldmap.jpg";
-    // Use the following code to create an new Image Icon and put it into the GUI
-    img = new ImageIcon("/workspaces/Countries/workspace/"+imagefile);
+    Country c = countryArray[index];
+    String imagefile = c.getImageFile();
+    img = new ImageIcon("/workspace/Countries/workspace/" + imagefile);
     imageLabel.setIcon(img);
   }
-  
   /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
-  public void nextButtonClick()
-  {
-    
-  }
+  public void nextButtonClick() {
+    index++;
+    if (index >= countryArray.length) {
+        index = 0; // Reinicia al primer país
+    }
+    outputLabel.setText(""); // Limpia el texto
+    showCountry();
+}
   
   /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
-  public void reviewButtonClick()
-  {
-     
-  }
-
+  public void reviewButtonClick() {
+    Country c = countryArray[index];
+    String details = c.toString();
+    outputLabel.setText(details); // Muestra los detalles del país
+    System.out.println(details);
+}
   /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
   */
-  public void quizButtonClick()
-  {
-    Scanner scan = new Scanner(System.in); 
-    
-    
-    
-  }
-
-
-
+  public void quizButtonClick() {
+    outputLabel.setText(""); // Limpia el texto
+    Scanner scan = new Scanner(System.in); // Crea el Scanner para leer entrada del usuario
+    try {
+        Country c = countryArray[index];
+        System.out.println("What country is this?");
+        String answer = scan.nextLine(); // Lee la respuesta del usuario
+        if (answer.equalsIgnoreCase(c.getName())) {
+            outputLabel.setText("Correct!");
+        } else {
+            outputLabel.setText("Incorrect. The correct answer is " + c.getName());
+        }
+    } finally {
+        scan.close(); // Cierra el Scanner al final del método
+    }
+}
 
   /* Do NOT change anything below here */
   /* The Main() constructor is finished and will construct the GUI */
